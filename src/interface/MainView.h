@@ -4,6 +4,8 @@
 #include <gtk/gtk.h>
 #include <map>
 
+#include "../core/Functions/FunctionOpenCV.h"
+
 class MainView
 {
     public:
@@ -17,11 +19,18 @@ class MainView
 
         void load();
 
-        bool update();
+        static gboolean update();
+
+        std::shared_ptr<FunctionOpenCV> functionOpencv;
+
+        static void compilAndRunFunction(GtkWidget *widget, MainView *mainView);
 
     private:
         enum GtkElement {
-
+            Window,
+            imageShowed,
+            entryCode,
+            returnCompilation
         };
 
         std::map<GtkElement, GtkWidget*> widgets;

@@ -31,6 +31,12 @@ class FunctionCPP
          */
         virtual std::string generatedCode() const;
 
+        /**
+         * @brief Get the Name object
+         * 
+         * @return const char* Name of the function
+         */
+        inline const char * getName() { return this->name; }
 
     protected:
 
