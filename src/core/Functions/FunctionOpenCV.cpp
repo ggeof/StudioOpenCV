@@ -31,3 +31,15 @@ std::string FunctionOpenCV::generatedCode() const
     std::cout << _code;
     return _code;
 }
+
+
+std::map<char *, cv::Mat> FunctionOpenCV::getImages() const
+{
+	return this->images;
+}
+
+
+void FunctionOpenCV::setImages(std::map<char *, cv::Mat> _images)
+{
+	this->images = _images;
+}

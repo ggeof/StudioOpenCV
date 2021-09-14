@@ -2,6 +2,25 @@
 #include "FunctionOpenCV.h"
 
 #include <fstream>
+#include <stdexcept>
+#include <stdio.h>
+
+std::string exec(const char* cmd) {
+    char buffer[128];
+    std::string result = "";
+    FILE* pipe = popen(cmd, "r");
+    if (!pipe) throw std::runtime_error("popen() failed!");
+    try {
+        while (fgets(buffer, sizeof buffer, pipe) != NULL) {
+            result += buffer;
+        }
+    } catch (...) {
+        pclose(pipe);
+        throw;
+    }
+    pclose(pipe);
+    return result;
+}
 
 ExecuteFunction::ExecuteFunction(std::shared_ptr<FunctionCPP> _function) :
     function(_function)
@@ -14,7 +33,7 @@ ExecuteFunction::~ExecuteFunction()
     
 }
 
-std::string ExecuteFunction::compile() 
+std::string ExecuteFunction::compile()   
 {
     std::string code ="#include <opencv2/core.hpp>\n";
     code += this->function->generatedCode() + "\n";
@@ -27,12 +46,10 @@ std::string ExecuteFunction::compile()
     file << code;
     file.close();
 
-    system("gcc code.cpp -o out.o `pkg-config opencv --cflags --libs`");
-
-    return "TODO";
+    return exec("gcc code.cpp -o out.o `pkg-config opencv --cflags --libs`");
 }
 
-void ExecuteFunction::execute() const
+std::string ExecuteFunction::execute() const
 {
-    system("./out.o");
+    return exec("./out.o");
 }

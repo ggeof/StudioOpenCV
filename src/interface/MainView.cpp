@@ -52,5 +52,15 @@ gboolean MainView::update()
 
 void MainView::compilAndRunFunction(GtkWidget *widget, MainView *mainView) 
 {
+    mainView->updateFunction();
+    ExecuteFunction exec(mainView->functionOpencv);
+    std::string rtn = exec.compile() + "\n--- END COMPILATION\n";
+    gtk_label_set_label(GTK_LABEL(mainView->widgets[GtkElement::returnCompilation]), rtn.c_str());
+    rtn = exec.execute() + "\n--- END EXECUTION\n";
+    gtk_label_set_label(GTK_LABEL(mainView->widgets[GtkElement::returnCompilation]), rtn.c_str());
+}
 
+void MainView::updateFunction() 
+{
+    this->functionOpencv->setCode(gtk_text_buffer_get_text(gtk_text_view_get_buffer(this->widgets[GtkElement::entryCode])));
 }

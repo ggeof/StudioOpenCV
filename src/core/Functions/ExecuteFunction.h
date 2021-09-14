@@ -30,8 +30,10 @@ public:
 
     /**
      * @brief Execute the function
+     * 
+     * @return std::string return of the execution
      */
-    void execute() const;
+    std::string execute() const;
 
 protected:
 

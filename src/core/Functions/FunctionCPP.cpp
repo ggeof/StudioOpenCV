@@ -35,3 +35,39 @@ std::string FunctionCPP::generatedCode() const
     _code += "\n}\n";
     return _code;
 }
+
+
+void FunctionCPP::setCode(std::string _code)
+{
+	this->code = _code;
+}
+
+
+std::string FunctionCPP::getCode() const
+{
+	return this->code;
+}
+
+
+void FunctionCPP::setInputs(std::vector<Variable> _inputs)
+{
+	this->inputs = _inputs;
+}
+
+
+std::vector<Variable> FunctionCPP::getVariables() const
+{
+	return this->variables;
+}
+
+
+void FunctionCPP::setVariables(std::vector<Variable> _variables)
+{
+	this->variables = _variables;
+}
+
+
+std::vector<Variable> FunctionCPP::getInputs() const
+{
+	return this->inputs;
+}

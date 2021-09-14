@@ -28,6 +28,20 @@ class FunctionOpenCV : public FunctionCPP
          */
         virtual std::string generatedCode() const;
 
+        /**
+         * @brief Get the Images object
+         * 
+         * @return std::map<char *, cv::Mat> Image used in the function 
+         */
+		std::map<char *, cv::Mat> getImages() const;
+
+        /**
+         * @brief Set the Images object
+         * 
+         * @param _images Set the image used in the function
+         */
+		void setImages(std::map<char *, cv::Mat> _images);
+
     protected:
 
         /**

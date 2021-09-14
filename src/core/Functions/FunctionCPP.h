@@ -38,6 +38,49 @@ class FunctionCPP
          */
         inline const char * getName() { return this->name; }
 
+        /**
+         * @brief Set the Code object
+         * 
+         * @param _code New code for the function
+         */
+		void setCode(std::string _code);
+
+        /**
+         * @brief Set the Inputs object
+         * 
+         * @param _inputs New Parameters for the function
+         */
+		void setInputs(std::vector<Variable> _inputs);
+
+        /**
+         * @brief Set the Variables object
+         * 
+         * @param _variables New variable for the function
+         */
+		void setVariables(std::vector<Variable> _variables);
+
+
+        /**
+         * @brief Get the Code object
+         * 
+         * @return std::string Code of the function
+         */
+		std::string getCode() const;
+
+        /**
+         * @brief Get the Inputs object
+         * 
+         * @return std::vector<Variable> Input of the function 
+         */
+		std::vector<Variable> getInputs() const;
+
+        /**
+         * @brief Get the Variables object
+         * 
+         * @return std::vector<Variable> Variables of the function
+         */
+		std::vector<Variable> getVariables() const;
+
     protected:
 
         /**

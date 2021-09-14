@@ -25,6 +25,8 @@ class MainView
 
         static void compilAndRunFunction(GtkWidget *widget, MainView *mainView);
 
+        void updateFunction();
+
     private:
         enum GtkElement {
             Window,
