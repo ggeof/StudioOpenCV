@@ -4,7 +4,6 @@
 int main(int argc, char **argv)
 {
     // On charge gtk
-    XInitThreads();
 	gtk_init(&argc, &argv);
 
 	cv::setUseOptimized(true); // On indique qu'on veut optimizer OpenCV
@@ -17,7 +16,7 @@ int main(int argc, char **argv)
 		argcView++;
 	}
 
-    MainView window();
+    MainView window;
     window.run();
 
 	return 1;

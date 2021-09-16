@@ -6,20 +6,15 @@
 #include <stdio.h>
 
 std::string exec(const char* cmd) {
-    char buffer[128];
-    std::string result = "";
-    FILE* pipe = popen(cmd, "r");
-    if (!pipe) throw std::runtime_error("popen() failed!");
-    try {
-        while (fgets(buffer, sizeof buffer, pipe) != NULL) {
-            result += buffer;
-        }
-    } catch (...) {
-        pclose(pipe);
-        throw;
-    }
-    pclose(pipe);
-    return result;
+    const static std::string FILE_OUTPUT = "output.cmd";
+    system((std::string(cmd) + " > " + FILE_OUTPUT +  " 2> " + FILE_OUTPUT).c_str());
+
+    std::ifstream ifs(FILE_OUTPUT);
+    std::string ret{ std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>() };
+    ifs.close(); // must close the inout stream so the file can be cleaned up
+    std::remove(FILE_OUTPUT.c_str());
+
+    return ret;
 }
 
 ExecuteFunction::ExecuteFunction(std::shared_ptr<FunctionCPP> _function) :
@@ -35,7 +30,7 @@ ExecuteFunction::~ExecuteFunction()
 
 std::string ExecuteFunction::compile()   
 {
-    std::string code ="#include <opencv2/core.hpp>\n";
+    std::string code ="#include <opencv2/core.hpp>\n#include <iostream>\n";
     code += this->function->generatedCode() + "\n";
     code += "int main() {\n";
     code += std::string(this->function->getName())+"();";
@@ -46,7 +41,7 @@ std::string ExecuteFunction::compile()
     file << code;
     file.close();
 
-    return exec("gcc code.cpp -o out.o `pkg-config opencv --cflags --libs`");
+    return exec("g++ code.cpp -o out.o `pkg-config opencv --cflags --libs`");
 }
 
 std::string ExecuteFunction::execute() const

@@ -19,9 +19,9 @@ std::string FunctionCPP::generatedCode() const
     {
         _code+=(std::string)this->inputs[i];
         if(i+1 < this->inputs.size())
-            _code+="; ";
+            _code+=", ";
     }
-    _code += "{\n";
+    _code += ")\n{\n";
 
 
     for(size_t i = 0; i < this->variables.size(); i++)

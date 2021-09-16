@@ -28,7 +28,7 @@ std::string FunctionOpenCV::generatedCode() const
     _code.insert(_code.find_first_of("{")+3, declaration);
     _code.insert(_code.find_last_of("}")-1, saves);
 
-    std::cout << _code;
+    //std::cout << _code;
     return _code;
 }
 

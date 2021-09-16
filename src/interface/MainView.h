@@ -4,6 +4,7 @@
 #include <gtk/gtk.h>
 #include <map>
 
+#include "../core/Functions/ExecuteFunction.h"
 #include "../core/Functions/FunctionOpenCV.h"
 
 class MainView
@@ -23,6 +24,13 @@ class MainView
 
         std::shared_ptr<FunctionOpenCV> functionOpencv;
 
+
+        static gboolean keyPressed(GtkWidget* widget, GdkEvent* event, MainView* wdw);
+
+        static void compilFunction(GtkWidget *widget, MainView *mainView);
+
+        static void runFunction(GtkWidget *widget, MainView *mainView);
+
         static void compilAndRunFunction(GtkWidget *widget, MainView *mainView);
 
         void updateFunction();
@@ -36,6 +44,8 @@ class MainView
         };
 
         std::map<GtkElement, GtkWidget*> widgets;
+
+        ExecuteFunction execFunction;
 };
 
 #endif // __MAINVIEW_H__
