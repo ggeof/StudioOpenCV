@@ -38,9 +38,12 @@ class MainView
     private:
         enum GtkElement {
             Window,
+            comboBoxChoseImage,
             imageShowed,
             entryCode,
-            returnCompilation
+            returnCompilation,
+
+            listImage
         };
 
         std::map<GtkElement, GtkWidget*> widgets;

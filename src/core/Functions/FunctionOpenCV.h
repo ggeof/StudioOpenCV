@@ -31,16 +31,16 @@ class FunctionOpenCV : public FunctionCPP
         /**
          * @brief Get the Images object
          * 
-         * @return std::map<char *, cv::Mat> Image used in the function 
+         * @return std::map<std::string, cv::Mat> Image used in the function 
          */
-		std::map<char *, cv::Mat> getImages() const;
+		std::map<std::string, cv::Mat> getImages() const;
 
         /**
          * @brief Set the Images object
          * 
          * @param _images Set the image used in the function
          */
-		void setImages(std::map<char *, cv::Mat> _images);
+		void setImages(std::map<std::string, cv::Mat> _images);
 
     protected:
 
@@ -48,7 +48,7 @@ class FunctionOpenCV : public FunctionCPP
          * @brief toute les maps qui pourront être affiché
          * 
          */
-        std::map<char *, cv::Mat> images;
+        std::map<std::string, cv::Mat> images;
 };
 
 #endif // __FUNCTIONOPENCV_H__

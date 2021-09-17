@@ -37,10 +37,35 @@ void MainView::load()
     this->widgets[GtkElement::returnCompilation] = GTK_WIDGET(gtk_builder_get_object(builder, "returnCompilation")); 
     this->widgets[GtkElement::entryCode] = GTK_WIDGET(gtk_builder_get_object(builder, "entryCode")); 
     this->widgets[GtkElement::imageShowed] = GTK_WIDGET(gtk_builder_get_object(builder, "imageShowed")); 
+    this->widgets[GtkElement::comboBoxChoseImage] = GTK_WIDGET(gtk_builder_get_object(builder, "cbAffichageImage")); 
 
     
     GtkWidget * btn = GTK_WIDGET(gtk_builder_get_object(builder, "btnCompilExecuter")); 
     g_signal_connect(G_OBJECT(btn), "clicked", G_CALLBACK(compilAndRunFunction), this);
+
+    // Action List Image
+    this->widgets[GtkElement::listImage] = GTK_WIDGET(gtk_builder_get_object(builder, "listImage")); 
+    g_signal_connect(G_OBJECT(gtk_builder_get_object(builder, "btnAddImg")), "clicked", G_CALLBACK(
+        +[](GtkWidget* widget, GtkListBox* list){
+            GtkWidget* entry = gtk_entry_new();
+            
+            gtk_widget_set_margin_left(entry, 10);
+            gtk_widget_set_margin_right(entry, 10);
+            gtk_widget_set_margin_top(entry, 10);
+            gtk_widget_set_margin_bottom(entry, 10);
+
+            GtkWidget* row = gtk_list_box_row_new();
+            gtk_container_add(GTK_CONTAINER(row), entry);
+            gtk_container_add(GTK_CONTAINER(list), row);
+            gtk_widget_show_all(row);
+        }), GTK_LIST_BOX(this->widgets[GtkElement::listImage]));
+    g_signal_connect(G_OBJECT(gtk_builder_get_object(builder, "btnDeleteImg")), "clicked", G_CALLBACK(
+        +[](GtkWidget* widget, GtkListBox* list){
+            GtkWidget* entry = gtk_entry_new();
+            auto a = gtk_list_box_get_selected_row(list);
+            if(a != NULL)
+                gtk_container_remove(GTK_CONTAINER(list), GTK_WIDGET(a));
+        }), GTK_LIST_BOX(this->widgets[GtkElement::listImage]));
 
 
     // action button menu
@@ -107,6 +132,8 @@ void MainView::compilAndRunFunction(GtkWidget *widget, MainView *mainView)
 
 void MainView::updateFunction() 
 {
+
+    // Update du code
     auto buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(this->widgets[GtkElement::entryCode]));
     GtkTextIter start,
                 end;
@@ -115,5 +142,25 @@ void MainView::updateFunction()
     gtk_text_buffer_get_start_iter(buf, &start);
 
     this->functionOpencv->setCode(std::string(gtk_text_buffer_get_text(buf, &start, &end, false)));
-    
+
+    // Update matrice intermédiaire
+    std::map<std::string, cv::Mat> imgs, imgsPrec = this->functionOpencv->getImages();
+
+    GList* l = gtk_container_get_children(GTK_CONTAINER(this->widgets[GtkElement::listImage]));    
+    GList* element = g_list_first(l);
+    while (element) {
+        std::string name(gtk_entry_get_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN((GtkWidget*)element->data)))));
+        if(name != "")
+        {
+            if(imgsPrec.find(name) != imgsPrec.end())
+                imgs[name] = imgsPrec[name];
+            else
+                imgs[name] = cv::Mat();
+        }
+
+        element = g_list_next(element);
+    }
+
+    this->functionOpencv->setImages(imgs);
 }
+
